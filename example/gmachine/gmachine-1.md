@@ -26,7 +26,6 @@ The `List[T]` here is a `typealias` of `@list.List[T]`
 First, let's define its type:
 
 ```moonbit
-///
 enum Stream[T] {
   Empty
   Cons(T, () -> Stream[T])
@@ -38,7 +37,6 @@ The only real difference between `Stream[T]` and `List[T]` is in the `Cons`: the
 We also need a function to convert a regular list into a lazy list:
 
 ```moonbit
-///
 fn[T] Stream::from_list(l : List[T]) -> Self[T] {
   match l {
     Empty => Empty
@@ -50,7 +48,6 @@ fn[T] Stream::from_list(l : List[T]) -> Self[T] {
 This function does not need to traverse the entire list to convert it into `Stream`. For operations that are not urgent (here, `Stream::from_list(xs)`), we wrap them directly in a thunk and return. The following `map` function will adopt this approach (though here, `xs` is already a thunk).
 
 ```moonbit
-///
 fn[X, Y] map(self : Stream[X], f : (X) -> Y) -> Stream[Y] {
   match self {
     Empty => Empty
@@ -62,7 +59,6 @@ fn[X, Y] map(self : Stream[X], f : (X) -> Y) -> Stream[Y] {
 The `take` function is responsible for performing computations, and it can extract n elements as needed.
 
 ```moonbit
-///
 fn[T] take(self : Stream[T], n : Int) -> List[T] {
   if n == 0 {
     @list.empty()
@@ -371,7 +367,7 @@ The entire state is represented using the type `GState`.
 struct GState {
   mut stack : List[Addr]
   heap : GHeap
-  globals : @hashmap.T[String, Addr]
+  globals : @hashmap.HashMap[String, Addr]
   mut code : List[Instruction]
   mut stats : GStats
 }
@@ -608,7 +604,7 @@ Once the super combinators are compiled, they need to be placed on the heap (alo
 ```moonbit
 fn build_initial_heap(
   scdefs : List[(String, Int, List[Instruction])]
-) -> (GHeap, @hashmap.T[String, Addr]) {
+) -> (GHeap, @hashmap.HashMap[String, Addr]) {
   let heap = { object_count: 0, memory: Array::make(10000, None) }
   let globals = @hashmap.new(capacity=50)
   loop scdefs {

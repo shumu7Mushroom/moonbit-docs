@@ -163,6 +163,8 @@ println(str)
  ---
 ```
 
+The [VSCode extension](../toolchain/vscode/index.md#actions) can help you switch between a plain text and the MoonBit's multiline string.
+
 When the expected type is `String` , the array literal syntax is overloaded to
 construct the `String` by specifying each character in the string.
 
@@ -248,7 +250,7 @@ You can use `@buffer.T` to construct bytes by writing various types of data. For
 
 ```moonbit
 test "buffer 1" {
-  let buf : @buffer.T = @buffer.new()
+  let buf : @buffer.Buffer = @buffer.new()
   buf.write_bytes(b"Hello")
   buf.write_byte(b'!')
   assert_eq(buf.contents(), b"Hello!")
@@ -1742,7 +1744,7 @@ MoonBit supports type alias via the syntax `typealias TargetType as Name`:
 pub typealias Int as Index
 
 // type alias are private by default
-typealias @list.T as Lst
+typealias @list.List as Lst
 ```
 
 Unlike all other kinds of type declaration above, type alias does not define a new type,
